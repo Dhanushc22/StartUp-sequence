@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Matter';
+  src: url('/fonts/MatterUprights-VF.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Season Mix';
+  src: url('/fonts/SeasonMixVFUprights.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Sarvam Design Tokens */
+  --color-sf: #ffffff;
+  --color-sf-secondary: #f7f7f5;
+  --color-sf-tertiary: #f0f0ee;
+  --color-tx: #171717;
+  --color-tx-secondary: #666666;
+  --color-tx-tertiary: #8f8f8f;
+  --color-st: #e5e5e5;
+  --color-st-secondary: #eaeaea;
+  --color-sr-indigo-50: #f5f7ff;
+  --color-sr-indigo-100: #eef2ff;
+  --color-sr-indigo-200: #e0e7ff;
+  --color-sr-indigo-300: #c7d2fe;
+  --color-sr-indigo-400: #818cf8;
+  --color-sr-indigo-500: #6366f1;
+  --color-sr-indigo-600: #4f46e5;
+  --color-sr-indigo-700: #4338ca;
+  --color-sr-indigo-800: #3730a3;
+  --color-sr-indigo-900: #312e81;
+  --color-sr-slate: #1e2033;
+  --color-sr-orange-100: #ffedd5;
+  --color-sr-orange-700: #c2410c;
+  --color-sr-orange-800: #9a3412;
+  --color-sr-green-100: #dcfce7;
+  --color-sr-green-700: #15803d;
+  --color-sr-pink-50: #fdf2f8;
+  --color-sr-pink-200: #fbcfe8;
+  --max-width-mx: 1320px;
+}
+
+@import "./sarvam-bundle.css";
+@import "./cowork.css";
+
+/* Font family helpers */
+.font-matter {
+  font-family: 'Matter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.font-season-mix {
+  font-family: 'Season Mix', Georgia, Cambria, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-sf, #ffffff);
+  color: var(--color-tx, #171717);
+  font-family: 'Matter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animations */
+@keyframes tickerMarquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-ticker-marquee {
+  animation: tickerMarquee 28s linear infinite;
+}
+
+.animate-ticker-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Logo Marquee */
+@keyframes logoScroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-logo-scroll {
+  display: flex;
+  width: max-content;
+  animation: logoScroll 35s linear infinite;
+}
+
+.animate-logo-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Scroll reveal helper */
+[data-section-reveal] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom button glow */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 80px at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.22) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
+}
