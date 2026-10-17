@@ -25,56 +25,60 @@ export default function Hero({ onOpenProjectModal }: HeroProps) {
   ];
 
   return (
-    <section className="relative flex flex-col gap-8 md:gap-0 pt-36 md:pt-40 md:h-fit min-h-screen 2xl:min-h-[75vh] overflow-x-clip bg-sf">
-      {/* Top Gradient Fade */}
-      <div className="top-0 left-0 z-10 absolute bg-gradient-to-b from-white to-transparent w-full h-28 pointer-events-none" aria-hidden="true" />
-
-      {/* SVG Background Gradient from Sarvam */}
-      <img
-        src="/assets/hero-gradient.svg"
-        alt=""
-        className="top-[-150%] md:-top-[110%] left-1/2 z-0 absolute max-w-none scale-60 md:scale-x-90 md:scale-y-80 -translate-x-1/2 pointer-events-none opacity-90"
+    <section className="relative flex flex-col gap-8 md:gap-0 pt-36 md:pt-40 md:h-fit min-h-screen 2xl:min-h-[75vh] overflow-x-clip bg-white">
+      {/* Scattered Organic Dot Pattern Theme (Stable on Pure White Background) */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none select-none"
         aria-hidden="true"
+        style={{
+          backgroundImage: "url('/assets/dot-strip.svg')",
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'top left',
+          backgroundSize: '1024px 118px',
+          opacity: 0.72,
+        }}
       />
 
-      {/* Hero Center Container */}
-      <div className="z-10 relative flex flex-col md:flex-1 justify-center items-center mx-auto pb-[10vh] w-[88%] md:w-10/12 max-w-[1320px]">
-        {/* Soft Radial Indigo Glow Orb */}
-        <div
-          className="top-1/2 left-1/2 -z-10 absolute opacity-40 blur-[80px] md:blur-[110px] w-72 md:w-[640px] h-72 md:h-[440px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, #A5BBFC 0%, #D5E2FF 40%, transparent 70%)' }}
-          aria-hidden="true"
-        />
-
-        {/* Nexitech Geometric Motif */}
+      {/* Hero Center Container (nudge 0.5% down) */}
+      <div className="z-10 relative flex flex-col md:flex-1 justify-center items-center mx-auto pb-[10vh] w-[88%] md:w-10/12 max-w-[1320px] translate-y-[0.5%]">
+        {/* Nexitech Geometric Motif in Black */}
         <img
           src="/assets/motif.svg"
           alt=""
           role="presentation"
-          className="w-auto h-6 md:h-8 object-cover opacity-85"
+          className="w-auto h-6 md:h-8 object-contain opacity-95"
         />
 
         {/* Eyebrow Label with Gradients */}
         <div className="flex flex-col items-center gap-1.5 md:gap-2 mt-5 md:mt-7 w-fit">
           <div className="w-full h-px" style={{ background: 'radial-gradient(circle, #6a88e2 0%, transparent 100%)' }} aria-hidden="true" />
-          <p className="px-8 font-matter text-sr-indigo-900 text-xs md:text-sm text-center leading-normal tracking-[0.18em] uppercase font-semibold">
+          <p
+            className="px-8 font-matter text-sr-indigo-900 text-xs md:text-sm text-center leading-normal tracking-[0.18em] uppercase font-semibold"
+            style={{ textShadow: '0 0 12px #ffffff, 0 0 24px #ffffff' }}
+          >
             Next-Generation Digital Engineering & AI Platform
           </p>
           <div className="w-full h-px" style={{ background: 'radial-gradient(circle, #6a88e2 0%, transparent 100%)' }} aria-hidden="true" />
         </div>
 
-        {/* H1 Display Heading */}
-        <h1 className="mt-5 md:mt-8 max-w-4xl font-season-mix text-[42px] text-tx md:text-[68px] text-center leading-[1.04] tracking-tight">
+        {/* H1 Display Heading with Micro Halo so dots remain visible behind without disturbing text */}
+        <h1
+          className="mt-5 md:mt-8 max-w-4xl font-season-mix text-[42px] text-tx md:text-[68px] text-center leading-[1.04] tracking-tight"
+          style={{ textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px #ffffff' }}
+        >
           We build what comes&nbsp;next.
         </h1>
 
-        {/* Subtitle */}
-        <p className="mt-3 md:mt-4 w-full max-w-2xl font-matter text-tx-secondary md:text-[20px] text-base text-center leading-[1.7]">
+        {/* Subtitle with Micro Halo */}
+        <p
+          className="mt-3 md:mt-4 w-full max-w-2xl font-matter text-tx-secondary md:text-[20px] text-base text-center leading-[1.7]"
+          style={{ textShadow: '0 0 14px rgba(255,255,255,0.95), 0 0 28px #ffffff' }}
+        >
           We design and develop high-performance web platforms, intelligent mobile applications, and enterprise AI solutions for ambitious businesses.
         </p>
 
         {/* Hero CTAs */}
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-5 mt-6 md:mt-9">
+        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 mt-6 md:mt-9 mb-12 md:mb-20">
           <a
             href="#showcase"
             className="group relative inline-flex items-center justify-center cursor-pointer font-season-mix font-medium overflow-hidden rounded-full min-h-[46px] text-white active:scale-[0.97] transition-all px-7 py-3 text-base shadow-sm hover:shadow-md"
@@ -105,8 +109,11 @@ export default function Hero({ onOpenProjectModal }: HeroProps) {
       </div>
 
       {/* Technology Marquee Strip */}
-      <div className="z-10 relative flex flex-col items-center gap-4 md:gap-6 md:pb-12 w-full shrink-0">
-        <p className="font-matter font-medium text-tx-tertiary text-xs uppercase tracking-[2px]">
+      <div className="z-10 relative flex flex-col items-center gap-4 md:gap-6 pt-3 md:pt-6 md:pb-14 w-full shrink-0">
+        <p
+          className="font-matter font-medium text-tx-tertiary text-xs uppercase tracking-[2px]"
+          style={{ textShadow: '0 0 10px #ffffff, 0 0 20px #ffffff' }}
+        >
           POWERED BY MODERN TECHNOLOGY & INFRASTRUCTURE
         </p>
 

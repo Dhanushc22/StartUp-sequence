@@ -96,8 +96,8 @@ export default function CoworkAccordion({ onOpenProjectModal }: CoworkAccordionP
         </button>
       </header>
 
-      {/* Expandable Accordion Bento Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 min-h-[480px]">
+      {/* Expandable Accordion Bento Grid — All 4 in a Single Row */}
+      <div className="flex flex-col lg:flex-row gap-4 min-h-[500px]">
         {columns.map((col, idx) => {
           const isActive = activeCol === idx;
           return (
@@ -105,10 +105,10 @@ export default function CoworkAccordion({ onOpenProjectModal }: CoworkAccordionP
               key={col.num}
               onClick={() => setActiveCol(idx)}
               onMouseEnter={() => setActiveCol(idx)}
-              className={`relative rounded-3xl border transition-all duration-500 ease-out p-6 md:p-8 flex flex-col justify-between overflow-hidden cursor-pointer ${
+              className={`relative rounded-3xl border transition-all duration-500 ease-out p-6 md:p-7 flex flex-col justify-between overflow-hidden cursor-pointer min-w-0 ${
                 isActive
-                  ? 'lg:col-span-2 bg-white border-sr-indigo-200 shadow-xl ring-1 ring-sr-indigo-100'
-                  : 'bg-sf-secondary/80 border-st hover:bg-white hover:border-st-secondary'
+                  ? 'lg:flex-[2.2] bg-white border-sr-indigo-200 shadow-xl ring-1 ring-sr-indigo-100'
+                  : 'lg:flex-1 bg-sf-secondary/80 border-st hover:bg-white hover:border-st-secondary'
               }`}
             >
               {/* Subtle top indicator */}
