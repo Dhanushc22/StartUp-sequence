@@ -1,12 +1,133 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, ChevronDown, Sparkles, Terminal, Code2, Cpu, Globe, Smartphone, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Menu, X, ChevronDown, Globe, Smartphone, Cpu, ShieldCheck } from 'lucide-react';
 
 interface HeaderProps {
   onOpenProjectModal: () => void;
   onOpenClientPortal: () => void;
 }
+
+/* ─── Hand-Drawn Doodle SVG Micro-Icons (Ref: Josh Kern aesthetic) ────── */
+
+// 🔨 1. Work — hand-drawn ink hammer that strikes down
+const HammerIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" className="hammer-svg">
+    {/* Hammer arm + head */}
+    <g className="hammer-tool" style={{ transformOrigin: '7.5px 16px' }}>
+      {/* Handle double outline */}
+      <path d="M6.5 8 L6.5 16 M8.5 8 L8.5 16" stroke="#141413" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M6.5 16 L8.5 16" stroke="#141413" strokeWidth="1.8" strokeLinecap="round" />
+      {/* Hammer Head with bevel */}
+      <path
+        d="M2.5 4.5 C2.5 4 3 3.5 3.8 3.5 L12.5 3.5 C13.3 3.5 14 4 14 4.8 L14 7.5 C14 8.2 13.3 8.8 12.5 8.8 L3.8 8.8 C3 8.8 2.5 8.2 2.5 7.5 Z"
+        fill="#141413"
+      />
+    </g>
+    {/* Impact sparks */}
+    <g className="hammer-sparks" style={{ opacity: 0 }}>
+      <line x1="13" y1="12" x2="16" y2="10.5" stroke="#141413" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14" y1="14" x2="17.5" y2="15.5" stroke="#141413" strokeWidth="1.5" strokeLinecap="round" />
+    </g>
+  </svg>
+);
+
+// ✳ 2. Process — hand-drawn 8-spoke black ink asterisk
+const AsteriskIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true" className="asterisk-svg">
+    <g className="asterisk-icon" style={{ transformOrigin: '8.5px 8.5px' }}>
+      <line x1="8.5" y1="1.5" x2="8.5" y2="15.5" stroke="#141413" strokeWidth="2.3" strokeLinecap="round" />
+      <line x1="1.5" y1="8.5" x2="15.5" y2="8.5" stroke="#141413" strokeWidth="2.3" strokeLinecap="round" />
+      <line x1="3.5" y1="3.5" x2="13.5" y2="13.5" stroke="#141413" strokeWidth="2.3" strokeLinecap="round" />
+      <line x1="13.5" y1="3.5" x2="3.5" y2="13.5" stroke="#141413" strokeWidth="2.3" strokeLinecap="round" />
+    </g>
+  </svg>
+);
+
+// 👀 3. Showcase / About — two doodle eyes with moving pupils & blink
+const EyesIcon = () => (
+  <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true" className="eyes-svg">
+    {/* Left Eye */}
+    <g className="eye-left-group" style={{ transformOrigin: '6px 8px' }}>
+      <path
+        d="M6 1.8 C3.2 1.8 2.2 4.5 2.2 8 C2.2 11.5 3.2 14.2 6 14.2 C8.8 14.2 9.8 11.5 9.8 8 C9.8 4.5 8.8 1.8 6 1.8 Z"
+        stroke="#141413"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+      <circle className="eye-left-pupil" cx="5.2" cy="8" r="2.1" fill="#141413" />
+    </g>
+    {/* Right Eye */}
+    <g className="eye-right-group" style={{ transformOrigin: '16px 8px' }}>
+      <path
+        d="M16 1.8 C13.2 1.8 12.2 4.5 12.2 8 C12.2 11.5 13.2 14.2 16 14.2 C18.8 14.2 19.8 11.5 19.8 8 C19.8 4.5 18.8 1.8 16 1.8 Z"
+        stroke="#141413"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+      <circle className="eye-right-pupil" cx="15.2" cy="8" r="2.1" fill="#141413" />
+    </g>
+  </svg>
+);
+
+// ♡ 4. Start a Project / Contact — hand-drawn continuous ink loop heart
+const HeartIcon = ({ inverted = false }: { inverted?: boolean }) => {
+  const strokeColor = inverted ? '#ede5d8' : '#141413';
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" className="heart-svg">
+      <path
+        className="heart-path"
+        d="M9 15.5 C7.2 13.8 2.5 10.2 2.5 6 C2.5 3.5 4.5 2.2 6.8 2.2 C8.2 2.2 9 3.1 9 3.1 C9 3.1 9.8 2.2 11.2 2.2 C13.5 2.2 15.5 3.5 15.5 6 C15.5 10.2 10.8 13.8 9 15.5 Z"
+        stroke={strokeColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ transformOrigin: '9px 9px' }}
+      />
+    </svg>
+  );
+};
+
+// 🗂 5. Platform — 3 doodle stacked layers
+const StackIcon = () => (
+  <svg width="19" height="16" viewBox="0 0 19 16" fill="none" aria-hidden="true">
+    <g className="stack-layer-1" style={{ transformOrigin: 'center' }}>
+      <rect x="2" y="1.5" width="15" height="3" rx="1.5" stroke="#141413" strokeWidth="1.7" />
+    </g>
+    <g className="stack-layer-2" style={{ transformOrigin: 'center' }}>
+      <rect x="1.5" y="6.5" width="16" height="3" rx="1.5" stroke="#141413" strokeWidth="1.7" />
+    </g>
+    <rect x="1" y="11.5" width="17" height="3" rx="1.5" stroke="#141413" strokeWidth="1.7" />
+  </svg>
+);
+
+// </> 6. Code & API — doodle code brackets
+const CodeIcon = () => (
+  <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
+    <path className="code-bracket-l" d="M6 3 L1.8 8 L6 13" stroke="#141413" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+    <line className="code-slash-mid" x1="12.5" y1="2.5" x2="9.5" y2="13.5" stroke="#141413" strokeWidth="1.9" strokeLinecap="round" style={{ transformOrigin: '11px 8px' }} />
+    <path className="code-bracket-r" d="M16 3 L20.2 8 L16 13" stroke="#141413" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+// 💡 7. Insights — doodle lightbulb
+const BulbIcon = () => (
+  <svg width="17" height="19" viewBox="0 0 17 19" fill="none" aria-hidden="true">
+    <g className="bulb-rays" style={{ transformOrigin: '8.5px 6.5px' }}>
+      <line x1="8.5" y1="1" x2="8.5" y2="2.5" stroke="#141413" strokeWidth="1.7" strokeLinecap="round" />
+      <line x1="3" y1="3" x2="4.3" y2="4.3" stroke="#141413" strokeWidth="1.7" strokeLinecap="round" />
+      <line x1="14" y1="3" x2="12.7" y2="4.3" stroke="#141413" strokeWidth="1.7" strokeLinecap="round" />
+    </g>
+    <path
+      d="M8.5 3 C5.5 3 4 4.8 4 7.2 C4 9 5 10.3 6.2 11.3 L6.2 13.5 L10.8 13.5 L10.8 11.3 C12 10.3 13 9 13 7.2 C13 4.8 11.5 3 8.5 3 Z"
+      stroke="#141413"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <line x1="6.5" y1="15.8" x2="10.5" y2="15.8" stroke="#141413" strokeWidth="1.7" strokeLinecap="round" />
+  </svg>
+);
 
 export default function Header({ onOpenProjectModal, onOpenClientPortal }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -14,192 +135,182 @@ export default function Header({ onOpenProjectModal, onOpenClientPortal }: Heade
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleMobileNav = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="top-0 right-0 left-0 z-50 fixed w-full font-matter">
-      {/* Announcement Ticker */}
-      <div className="relative z-10">
-        <div
-          className="relative flex shrink-0 justify-center items-center border-st-secondary border-b h-9 overflow-hidden"
-          style={{
-            background: 'linear-gradient(180deg, #ffffff 0%, var(--color-sr-indigo-50, #f5f7ff) 100%)',
-            boxShadow: 'inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 4px color-mix(in srgb, var(--color-sr-indigo-400, #818cf8) 45%, transparent)'
-          }}
-        >
-          {/* Desktop Ticker */}
-          <div className="relative z-10 hidden lg:flex justify-center items-center w-full h-full px-6">
-            <div className="flex items-center gap-3.5 shrink-0">
-              {/* Star SVG Motif */}
-              <span aria-hidden="true" className="flex items-center gap-2 shrink-0 pointer-events-none mr-2">
-                <svg className="shrink-0" style={{ opacity: 0.25, transform: 'scale(0.7)' }} width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <path d="M5.446 9.268C4.39 10.323 2.68 10.323 1.624 9.268L0.203 7.846C-0.068 7.576 -0.068 7.138 0.203 6.868l1.421-1.422C2.68 4.39 4.39 4.39 5.446 5.446L7.357 7.357l-1.91 1.911Z" fill="#4338ca" />
-                  <path d="M5.446 13.09c-1.055-1.056-1.055-2.767 0-3.822l1.911-1.911 1.911 1.911c1.055 1.055 1.055 2.766 0 3.822L7.357 15l-1.911-1.91Z" fill="#4338ca" />
-                  <path d="M5.446 5.446c-1.055-1.055-1.055-2.767 0-3.822L6.868.203C7.138-.068 7.576-.068 7.846.203l1.421 1.421c1.056 1.056 1.056 2.767 0 3.822L7.357 7.357 5.446 5.446Z" fill="#4338ca" />
-                  <path d="M13.09 9.268c-1.056 1.055-2.767 1.055-3.822 0L7.357 7.357l1.911-1.911c1.055-1.056 2.766-1.056 3.822 0l1.421 1.422c.27.27.27.708 0 .978l-1.421 1.422Z" fill="#4338ca" />
-                </svg>
-                <svg className="shrink-0" style={{ opacity: 0.6, transform: 'scale(0.9)' }} width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <path d="M5.446 9.268C4.39 10.323 2.68 10.323 1.624 9.268L0.203 7.846C-0.068 7.576 -0.068 7.138 0.203 6.868l1.421-1.422C2.68 4.39 4.39 4.39 5.446 5.446L7.357 7.357l-1.91 1.911Z" fill="#4338ca" />
-                  <path d="M5.446 13.09c-1.055-1.056-1.055-2.767 0-3.822l1.911-1.911 1.911 1.911c1.055 1.055 1.055 2.766 0 3.822L7.357 15l-1.911-1.91Z" fill="#4338ca" />
-                  <path d="M5.446 5.446c-1.055-1.055-1.055-2.767 0-3.822L6.868.203C7.138-.068 7.576-.068 7.846.203l1.421 1.421c1.056 1.056 1.056 2.767 0 3.822L7.357 7.357 5.446 5.446Z" fill="#4338ca" />
-                  <path d="M13.09 9.268c-1.056 1.055-2.767 1.055-3.822 0L7.357 7.357l1.911-1.911c1.055-1.056 2.766-1.056 3.822 0l1.421 1.422c.27.27.27.708 0 .978l-1.421 1.422Z" fill="#4338ca" />
-                </svg>
-              </span>
-              <span className="px-2 py-0.5 border rounded-full font-matter font-semibold text-xs leading-none bg-white border-st-secondary text-sr-indigo-900 shadow-2xs">
-                New
-              </span>
-              <div className="flex items-center gap-3 font-matter font-medium text-tx hover:text-tx-secondary text-[14px] tracking-wide transition-colors">
-                <span className="whitespace-nowrap">
-                  Introducing Nexitech 3.0: Full-Stack Digital Engineering, Autonomous Agents & Custom Cloud Architectures
-                </span>
-                <button
-                  onClick={onOpenProjectModal}
-                  className="whitespace-nowrap underline underline-offset-2 text-sr-indigo-900 hover:text-sr-indigo-950 font-semibold cursor-pointer"
-                >
-                  Start a project
-                </button>
-              </div>
-            </div>
-          </div>
 
-          {/* Mobile Ticker Marquee */}
-          <div className="relative z-10 flex lg:hidden items-center w-full">
-            <div className="animate-ticker-marquee flex items-center min-w-max pr-4 gap-3 text-xs">
-              <span className="px-2 py-0.5 border rounded-full font-semibold bg-white border-st-secondary text-sr-indigo-900">
-                New
-              </span>
-              <span className="text-tx font-medium whitespace-nowrap">
-                Nexitech 3.0: Digital Engineering, Mobile Apps & AI Solutions
-              </span>
-              <button
-                onClick={onOpenProjectModal}
-                className="underline underline-offset-2 text-sr-indigo-900 font-semibold whitespace-nowrap"
-              >
-                Inquire now
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Floating Navbar */}
-      <div className={`relative z-20 w-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-xs' : 'bg-white'}`}>
+      {/* Main Navbar */}
+      <div className={`relative z-20 w-full transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-xs' : 'bg-white'}`}>
         <div className="absolute inset-x-0 bottom-0 h-px bg-st-secondary"></div>
-        <div className="relative flex justify-between items-center mx-auto w-10/12 2xl:max-w-[1320px] py-3.5">
+        <div className="relative flex justify-between items-center mx-auto w-11/12 2xl:max-w-[1360px] py-3.5">
+
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2.5 group">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-2.5 group"
+          >
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1e2033] via-[#3a3f5c] to-[#4338ca] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <path d="M4 18L10 6L14 14L20 6" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 <circle cx="20" cy="6" r="2" fill="#ff9257" />
               </svg>
             </div>
             <div className="flex flex-col">
-              <span className="font-season-mix text-lg font-bold tracking-tight text-tx leading-none">
-                NEXITECH
-              </span>
-              <span className="font-matter text-[9px] uppercase tracking-[0.2em] text-tx-tertiary">
-                Digital Engineering
-              </span>
+              <span className="font-season-mix text-lg font-bold tracking-tight text-tx leading-none">NEXITECH</span>
+              <span className="font-matter text-[9px] uppercase tracking-[0.2em] text-tx-tertiary">Digital Engineering</span>
             </div>
           </a>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-1">
-            <div className="relative" onMouseLeave={() => setActiveDropdown(null)}>
-              <button
-                onMouseEnter={() => setActiveDropdown('services')}
-                onClick={() => setActiveDropdown(activeDropdown === 'services' ? null : 'services')}
-                className="flex items-center gap-1.5 cursor-pointer px-4 min-h-10 font-matter text-[15px] text-tx hover:text-tx-secondary transition-colors"
-              >
-                <span>Services</span>
-                <ChevronDown className="w-3.5 h-3.5 text-tx-tertiary" />
-              </button>
+          {/* Desktop Nav — Josh Kern artisan pill buttons */}
+          <nav className="hidden lg:flex items-center gap-2">
 
-              {/* Mega Dropdown */}
+            {/* 1. 🔨 Work (with Services dropdown) */}
+            <div className="relative" onMouseLeave={() => setActiveDropdown(null)}>
+              <a
+                href="#services"
+                onMouseEnter={() => setActiveDropdown('services')}
+                onClick={(e) => {
+                  if (activeDropdown === 'services') {
+                    setActiveDropdown(null);
+                  } else {
+                    setActiveDropdown('services');
+                  }
+                  scrollToSection(e, 'services');
+                }}
+                className="nav-pill-btn group bg-white hover:bg-neutral-50 border border-neutral-200 shadow-2xs"
+                id="nav-work"
+              >
+                <HammerIcon />
+                <span>Work</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-black/50 transition-transform ${activeDropdown === 'services' ? 'rotate-180' : ''}`} />
+              </a>
+
               {activeDropdown === 'services' && (
-                <div className="absolute top-full left-0 w-80 p-3 bg-white border border-st rounded-2xl shadow-xl z-50 flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <a href="#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-sf-secondary transition-colors">
-                    <div className="p-2 rounded-lg bg-sr-indigo-50 text-sr-indigo-700">
-                      <Globe className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm text-tx">Web Applications</div>
-                      <div className="text-xs text-tx-tertiary">Scalable cloud & SaaS platforms</div>
-                    </div>
-                  </a>
-                  <a href="#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-sf-secondary transition-colors">
-                    <div className="p-2 rounded-lg bg-green-50 text-green-700">
-                      <Smartphone className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm text-tx">Mobile Applications</div>
-                      <div className="text-xs text-tx-tertiary">Native iOS & Android apps</div>
-                    </div>
-                  </a>
-                  <a href="#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-sf-secondary transition-colors">
-                    <div className="p-2 rounded-lg bg-orange-50 text-orange-700">
-                      <Cpu className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm text-tx">AI & Automation</div>
-                      <div className="text-xs text-tx-tertiary">Autonomous agents & LLM apps</div>
-                    </div>
-                  </a>
-                  <a href="#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-sf-secondary transition-colors">
-                    <div className="p-2 rounded-lg bg-purple-50 text-purple-700">
-                      <ShieldCheck className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm text-tx">Custom Software</div>
-                      <div className="text-xs text-tx-tertiary">Mission-critical enterprise tools</div>
-                    </div>
-                  </a>
+                <div className="absolute top-full left-0 mt-2 w-80 p-3 bg-white border border-neutral-200 rounded-2xl shadow-xl z-50 flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-tx-tertiary">Engineering Capabilities</div>
+                  {[
+                    { icon: <Globe className="w-4 h-4" />, bg: 'bg-neutral-100 text-[#141413]', title: 'Web Applications', sub: 'Scalable cloud & SaaS platforms' },
+                    { icon: <Smartphone className="w-4 h-4" />, bg: 'bg-neutral-100 text-[#141413]', title: 'Mobile Applications', sub: 'Native iOS & Android apps' },
+                    { icon: <Cpu className="w-4 h-4" />, bg: 'bg-neutral-100 text-[#141413]', title: 'AI & Automation', sub: 'Autonomous agents & LLM apps' },
+                    { icon: <ShieldCheck className="w-4 h-4" />, bg: 'bg-neutral-100 text-[#141413]', title: 'Custom Software', sub: 'Mission-critical enterprise tools' },
+                  ].map((item) => (
+                    <a
+                      key={item.title}
+                      href="#services"
+                      onClick={(e) => {
+                        setActiveDropdown(null);
+                        scrollToSection(e, 'services');
+                      }}
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-neutral-50 transition-colors"
+                    >
+                      <div className={`p-2 rounded-lg ${item.bg}`}>{item.icon}</div>
+                      <div>
+                        <div className="font-bold text-sm text-[#141413]">{item.title}</div>
+                        <div className="text-xs text-tx-tertiary">{item.sub}</div>
+                      </div>
+                    </a>
+                  ))}
                 </div>
               )}
             </div>
 
-            <a href="#showcase" className="flex items-center cursor-pointer px-4 min-h-10 font-matter text-[15px] text-tx hover:text-tx-secondary transition-colors">
-              Showcase
+            {/* 2. ✳ Process — spinning asterisk */}
+            <a
+              href="#process"
+              onClick={(e) => scrollToSection(e, 'process')}
+              className="nav-pill-btn group bg-white hover:bg-neutral-50 border border-neutral-200 shadow-2xs"
+              id="nav-process"
+            >
+              <AsteriskIcon />
+              <span>Process</span>
             </a>
-            <a href="#platform" className="flex items-center cursor-pointer px-4 min-h-10 font-matter text-[15px] text-tx hover:text-tx-secondary transition-colors">
-              Platform
+
+            {/* 3. 👀 Showcase — blinking & looking eyes */}
+            <a
+              href="#showcase"
+              onClick={(e) => scrollToSection(e, 'showcase')}
+              className="nav-pill-btn group bg-white hover:bg-neutral-50 border border-neutral-200 shadow-2xs"
+              id="nav-showcase"
+            >
+              <EyesIcon />
+              <span>Showcase</span>
             </a>
-            <a href="#api" className="flex items-center cursor-pointer px-4 min-h-10 font-matter text-[15px] text-tx hover:text-tx-secondary transition-colors">
-              Code & API
+
+            {/* 4. 🗂 Platform — floating layers */}
+            <a
+              href="#platform"
+              onClick={(e) => scrollToSection(e, 'platform')}
+              className="nav-pill-btn group bg-white hover:bg-neutral-50 border border-neutral-200 shadow-2xs"
+              id="nav-platform"
+            >
+              <StackIcon />
+              <span>Platform</span>
             </a>
-            <a href="#process" className="flex items-center cursor-pointer px-4 min-h-10 font-matter text-[15px] text-tx hover:text-tx-secondary transition-colors">
-              Process
+
+            {/* 5. </> Code & API — expanding brackets */}
+            <a
+              href="#api"
+              onClick={(e) => scrollToSection(e, 'api')}
+              className="nav-pill-btn group bg-white hover:bg-neutral-50 border border-neutral-200 shadow-2xs"
+              id="nav-api"
+            >
+              <CodeIcon />
+              <span>Code &amp; API</span>
             </a>
-            <a href="#insights" className="flex items-center cursor-pointer px-4 min-h-10 font-matter text-[15px] text-tx hover:text-tx-secondary transition-colors">
-              Insights
+
+            {/* 6. 💡 Insights — bursting rays */}
+            <a
+              href="#insights"
+              onClick={(e) => scrollToSection(e, 'insights')}
+              className="nav-pill-btn group bg-white hover:bg-neutral-50 border border-neutral-200 shadow-2xs"
+              id="nav-insights"
+            >
+              <BulbIcon />
+              <span>Insights</span>
             </a>
           </nav>
 
-          {/* Right Action CTAs */}
+          {/* CTA buttons */}
           <div className="flex items-center gap-2.5">
             <button
               onClick={onOpenClientPortal}
-              className="hidden sm:inline-flex items-center justify-center cursor-pointer font-matter rounded-full whitespace-nowrap bg-sf-secondary text-tx hover:bg-white shadow-[inset_0_2px_0_rgba(200,200,200,0.1),inset_0_-1px_0_rgba(0,0,0,0.05)] transition-all font-medium min-h-[40px] px-5 py-2 text-[14px] border border-st-secondary"
+              className="hidden sm:inline-flex items-center justify-center cursor-pointer font-matter rounded-full whitespace-nowrap bg-white text-[#141413] hover:bg-neutral-50 transition-all font-bold min-h-[42px] px-5 py-2 text-[14px] border border-neutral-200 shadow-2xs"
             >
               Client Portal
             </button>
             <button
               onClick={onOpenProjectModal}
-              className="group relative inline-flex items-center justify-center cursor-pointer font-matter rounded-full whitespace-nowrap overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-2px_0_rgba(0,0,0,0.2)] font-medium min-h-[40px] text-white bg-sr-slate px-5 py-2 text-[14px] active:scale-[0.96] transition-all hover:bg-[#151726]"
+              className="group relative inline-flex items-center justify-center cursor-pointer font-matter rounded-full whitespace-nowrap overflow-hidden font-bold min-h-[42px] text-[#141413] bg-white hover:bg-neutral-50 border border-neutral-200 px-5 py-2 text-[14px] active:scale-[0.97] transition-all shadow-2xs gap-2"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                <span>Start a Project</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </span>
+              <HeartIcon />
+              <span>Start a Project</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#141413] group-hover:translate-x-0.5 transition-transform" />
             </button>
-
-            {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-tx hover:bg-sf-secondary rounded-xl transition-colors"
@@ -210,62 +321,32 @@ export default function Header({ onOpenProjectModal, onOpenClientPortal }: Heade
           </div>
         </div>
 
-        {/* Mobile Dropdown Drawer */}
+        {/* Mobile Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-st-secondary bg-white px-6 py-6 flex flex-col gap-4 animate-in slide-in-from-top-4 duration-200">
-            <a
-              href="#services"
-              onClick={() => setMobileMenuOpen(false)}
-              className="font-matter text-base text-tx font-medium py-1"
-            >
-              Services & Capabilities
-            </a>
-            <a
-              href="#showcase"
-              onClick={() => setMobileMenuOpen(false)}
-              className="font-matter text-base text-tx font-medium py-1"
-            >
-              Interactive Showcase
-            </a>
-            <a
-              href="#platform"
-              onClick={() => setMobileMenuOpen(false)}
-              className="font-matter text-base text-tx font-medium py-1"
-            >
-              Engineering Platform
-            </a>
-            <a
-              href="#api"
-              onClick={() => setMobileMenuOpen(false)}
-              className="font-matter text-base text-tx font-medium py-1"
-            >
-              Developer Code & API
-            </a>
-            <a
-              href="#process"
-              onClick={() => setMobileMenuOpen(false)}
-              className="font-matter text-base text-tx font-medium py-1"
-            >
-              Development Process
-            </a>
+          <div className="lg:hidden border-t border-st-secondary bg-white px-6 py-6 flex flex-col gap-3 animate-in slide-in-from-top-4 duration-200">
+            {[
+              { id: 'services', label: 'Work (Capabilities)', icon: <HammerIcon /> },
+              { id: 'process', label: 'Process', icon: <AsteriskIcon /> },
+              { id: 'showcase', label: 'Showcase', icon: <EyesIcon /> },
+              { id: 'platform', label: 'Platform', icon: <StackIcon /> },
+              { id: 'api', label: 'Code & API', icon: <CodeIcon /> },
+              { id: 'insights', label: 'Insights', icon: <BulbIcon /> },
+            ].map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleMobileNav(e, item.id)}
+                className="flex items-center gap-3 font-matter text-base text-[#141413] font-bold py-2 px-3 rounded-xl bg-white hover:bg-neutral-50 border border-neutral-100 transition-colors"
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </a>
+            ))}
             <div className="pt-2 flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenClientPortal();
-                }}
-                className="w-full py-3 rounded-full border border-st bg-sf-secondary text-tx text-sm font-medium text-center"
-              >
-                Client Portal
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenProjectModal();
-                }}
-                className="w-full py-3 rounded-full bg-sr-slate text-white text-sm font-medium text-center"
-              >
-                Start a Project
+              <button onClick={() => { setMobileMenuOpen(false); onOpenClientPortal(); }} className="w-full py-3 rounded-full border border-neutral-200 bg-white text-[#141413] text-sm font-bold text-center">Client Portal</button>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenProjectModal(); }} className="w-full py-3 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 text-[#141413] text-sm font-bold text-center flex items-center justify-center gap-2">
+                <HeartIcon />
+                <span>Start a Project</span>
               </button>
             </div>
           </div>

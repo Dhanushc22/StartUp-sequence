@@ -143,16 +143,13 @@ for step in response.events:
   return (
     <section id="api" className="mx-auto w-[92%] md:w-10/12 max-w-[1320px] py-16">
       {/* Heading */}
-      <div className="flex flex-col items-center text-center gap-3 mb-12">
+      <div className="flex flex-col items-center text-center gap-3 mb-10">
         <p className="font-matter text-xs font-semibold uppercase tracking-widest text-sr-indigo-900">
           Engineered for Developers & Engineering Teams
         </p>
         <h2 className="font-season-mix text-3xl md:text-[44px] font-medium text-tx">
           Build anything with Nexitech APIs & Architecture
         </h2>
-        <p className="font-matter text-sm md:text-base text-tx-secondary max-w-xl">
-          From an idea to production-ready enterprise systems in record time. Clean developer primitives with full TypeScript and Python ergonomics.
-        </p>
       </div>
 
       {/* Code Showcase Terminal Card */}

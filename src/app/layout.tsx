@@ -1,5 +1,13 @@
 import type { Metadata, Viewport } from 'next';
+import { JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -38,7 +46,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased scroll-smooth" data-fx="full">
-      <body className="min-h-full flex flex-col font-matter bg-sf text-tx overscroll-none overflow-x-clip">
+      <body className={`min-h-full flex flex-col font-matter bg-sf text-tx overscroll-none overflow-x-clip ${jetbrainsMono.variable}`}>
         {children}
       </body>
     </html>
